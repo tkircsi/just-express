@@ -1,5 +1,5 @@
 function getCity() {
-  get('http://localhost:3000')
+  get('http://localhost:3999')
     .then(result => {
       console.log(result);
     })
