@@ -12,6 +12,17 @@ app.post('/ajax', (req, res) => {
   res.send(req.body.name);
 });
 
+app.post('/delayed', async (req, res) => {
+  await sleep(req.body.time);
+  res.send(`Delayed for ${req.body.time}ms.`);
+});
+
 app.listen(3000, () => {
   console.log('App listening on port 3000!');
 });
+
+function sleep(time) {
+  return new Promise(function(resolve, reject) {
+    setTimeout(() => resolve('done'), time);
+  });
+}
