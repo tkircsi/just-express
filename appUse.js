@@ -38,12 +38,6 @@ app.get('/', [userNameHeaderCheck, isValidated], (req, res) => {
   );
 });
 
-app.get('/api/city', (req, res) => {
-  res.status(200).json({
-    city: 'Budapest'
-  });
-});
-
 app.listen(3999, () => {
   console.log('App listening on port 3999!');
 });
