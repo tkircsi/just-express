@@ -1,0 +1,23 @@
+{
+  "name": "express_2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "corsUse.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^13.9.8",
+    "nodemon": "^2.0.2"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^3.22.0",
+    "querystring": "^0.2.0",
+    "response-time": "^2.3.2"
+  }
+}

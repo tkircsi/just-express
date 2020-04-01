@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+      // POST form data
+      const params = new URLSearchParams();
+      params.append('name', 'Form Data');
+
+      axios
+        .post('http://localhost:3000/ajax', params)
+        .then(result => {
+          console.log(result.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
+      // POST JSON data
+      axios
+        .post('http://localhost:3000/ajax', { name: 'JSON' })
+        .then(result => {
+          console.log(result.data);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    </script>
+  </body>
+</html>
