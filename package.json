@@ -1,0 +1,22 @@
+{
+  "name": "justexpress",
+  "version": "1.0.0",
+  "description": "",
+  "main": "expressServer.js",
+  "scripts": {
+    "start": "nodemon expressServer.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/axios": "^0.14.0",
+    "axios": "^0.19.2",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.3",
+    "@types/node": "^13.9.8",
+    "nodemon": "^2.0.2"
+  }
+}
