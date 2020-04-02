@@ -14,6 +14,15 @@ app.use(cookieParser('cookie-secret-sign'));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+app.use((req, res, next) => {
+  if (req.query.msg === 'fail') {
+    res.locals.msg = 'Invalid credentials!';
+  } else {
+    res.locals.msg = '';
+  }
+  next();
+});
+
 app.get('/', (req, res) => {
   res.send('Health check!');
 });
