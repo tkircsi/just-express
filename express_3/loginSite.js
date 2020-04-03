@@ -47,6 +47,21 @@ app.get('/welcome', (req, res) => {
   });
 });
 
+app.get('/story/:id', (req, res) => {
+  const id = req.params.id;
+  res.send(id);
+});
+
+// always RUN BEFORE ROUTES
+app.param('id', (req, res, next, id) => {
+  if ('123'.split('').includes(id, 0)) {
+    req.params.id = `Story ${id}`;
+    next();
+  } else {
+    res.send('Invalid parameter!');
+  }
+});
+
 app.get('/logout', (req, res) => {
   res.clearCookie('username');
   res.redirect('/login');
