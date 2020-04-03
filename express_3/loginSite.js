@@ -62,6 +62,13 @@ app.param('id', (req, res, next, id) => {
   }
 });
 
+app.get('/statement', (req, res) => {
+  res.download(
+    path.join(__dirname, 'userStatements/BankStatementChequing.png'),
+    `${req.cookies.username}_statement.png`
+  );
+});
+
 app.get('/logout', (req, res) => {
   res.clearCookie('username');
   res.redirect('/login');
