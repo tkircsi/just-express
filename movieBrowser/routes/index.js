@@ -37,4 +37,30 @@ router.get('/movie/:id', async (req, res, next) => {
   }
 });
 
+router.post('/search', async (req, res, next) => {
+  try {
+    const { cat, movieSearch } = req.body;
+    const url =
+      process.env.TMDB_BASE_URL +
+      '/search/' +
+      cat +
+      '?query=' +
+      encodeURIComponent(movieSearch);
+    const resp = await axios.get(url);
+    let parsedData = [];
+    if (cat == 'movie') {
+      parsedData = resp.data.results;
+    } else if (cat == 'person') {
+      parsedData = resp.data.results[0].known_for;
+    }
+    // res.json(resp.data);
+    res.render('index', {
+      parsedData
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error!');
+  }
+});
+
 module.exports = router;
