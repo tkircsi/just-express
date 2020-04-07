@@ -3,16 +3,14 @@ const router = express.Router();
 const axios = require('axios');
 
 router.use((req, res, next) => {
-  res.locals.imageUrl = process.env.TMDB_IMAGE_URL;
+  res.locals.imageUrl = process.env.IMAGE_URL;
   next();
 });
 
 /* GET home page. */
 router.get('/', async (req, res, next) => {
   try {
-    const resp = await axios.get(
-      process.env.TMDB_BASE_URL + '/movie/now_playing'
-    );
+    const resp = await axios.get(process.env.BASE_URL + '/movie/now_playing');
     // res.json(resp.data);
     res.render('index', {
       parsedData: resp.data.results
@@ -26,7 +24,7 @@ router.get('/', async (req, res, next) => {
 router.get('/movie/:id', async (req, res, next) => {
   try {
     const id = req.params.id;
-    const resp = await axios.get(process.env.TMDB_BASE_URL + '/movie/' + id);
+    const resp = await axios.get(process.env.BASE_URL + '/movie/' + id);
     // res.json(resp.data);
     res.render('single-movie', {
       parsedData: resp.data
@@ -41,7 +39,7 @@ router.post('/search', async (req, res, next) => {
   try {
     const { cat, movieSearch } = req.body;
     const url =
-      process.env.TMDB_BASE_URL +
+      process.env.BASE_URL +
       '/search/' +
       cat +
       '?query=' +

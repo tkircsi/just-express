@@ -4,26 +4,16 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const helmet = require('helmet');
-const dotenv = require('dotenv');
 const cors = require('cors');
-const axios = require('axios');
-
-dotenv.config({ path: './config/local.env' });
 
 const indexRouter = require('./routes/index');
+const movieRouter = require('./routes/movie');
+const searchRouter = require('./routes/search');
 
 const app = express();
 
-// set axios global headers
-axios.defaults.headers['Authorization'] = `Bearer ${process.env.TOKEN}`;
-axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8';
-
 app.use(helmet());
 app.use(cors());
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -31,7 +21,25 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+// Checking for TOKEN
+app.use((req, res, next) => {
+  try {
+    const token_string = req.headers['authorization'];
+    const [bearer, token] = token_string.split(' ');
+    if (bearer !== 'Bearer' || token !== 'Local_Bearer_Token')
+      throw new Error();
+    next();
+  } catch (err) {
+    res.status(401).json({
+      success: false,
+      error: 'Invalid token!'
+    });
+  }
+});
+
+app.use('/api', indexRouter);
+app.use('/api/movie', movieRouter);
+app.use('/api/search', searchRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
