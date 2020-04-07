@@ -1,14 +1,26 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const passport = require('passport');
 
 router.use((req, res, next) => {
   res.locals.imageUrl = process.env.IMAGE_URL;
   next();
 });
 
+router.get('/login', passport.authenticate('github'));
+
+router.get(
+  '/auth',
+  passport.authenticate('github', {
+    successRedirect: '/',
+    failureRedirect: '/loginfailed'
+  })
+);
+
 /* GET home page. */
 router.get('/', async (req, res, next) => {
+  // console.log(req.user.displayName);
   try {
     const resp = await axios.get(process.env.BASE_URL + '/movie/now_playing');
     // res.json(resp.data);

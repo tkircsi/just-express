@@ -7,8 +7,12 @@ const helmet = require('helmet');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const axios = require('axios');
+const session = require('express-session');
 
-dotenv.config({ path: './config/local.env' });
+const passport = require('passport');
+const GitHubStrategy = require('passport-github').Strategy;
+
+dotenv.config({ path: './config/dev.env' });
 
 const indexRouter = require('./routes/index');
 
@@ -20,6 +24,35 @@ axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8';
 
 app.use(helmet());
 app.use(cors());
+app.use(
+  session({
+    secret: process.env.SESSION,
+    resave: false,
+    saveUninitialized: true
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(
+  new GitHubStrategy(
+    {
+      clientID: process.env.Client_ID,
+      clientSecret: process.env.Client_Secret,
+      callbackURL: 'http://localhost:3000/auth'
+    },
+    function(accessToken, refreshToken, profile, cb) {
+      cb(null, profile);
+    }
+  )
+);
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
