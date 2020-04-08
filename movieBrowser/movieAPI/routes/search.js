@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const asyncHandler = require('../utils/asynchandler');
 
 const movies = require('../data/movies');
 const people = require('../data/people');
 
-const requiredQuery = async (req, res, next) => {
+const requiredQuery = asyncHandler(async (req, res, next)) => {
   const query = req.query.query;
   if (!query) {
     res.status(400).json({
@@ -21,8 +22,7 @@ router.use(requiredQuery);
 // @desc    Search for a movie
 // @route   GET /api/search
 // @access  Public
-router.get('/movie', async (req, res, next) => {
-  try {
+router.get('/movie', asyncHandler(async (req, res, next)) => {
     const query = req.query.query;
     const results = movies.filter(movie => {
       let found = false;
@@ -33,18 +33,12 @@ router.get('/movie', async (req, res, next) => {
       success: true,
       results
     });
-  } catch (err) {
-    res.status(500).json({
-      success: false
-    });
-  }
 });
 
 // @desc    Search for a person
 // @route   GET /api/search
 // @access  Public
-router.get('/person', async (req, res, next) => {
-  try {
+router.get('/person', asyncHandler(async (req, res, next)) => {
     const query = req.query.query;
     const results = people.filter(person => {
       let found = false;
@@ -55,11 +49,6 @@ router.get('/person', async (req, res, next) => {
       success: true,
       results
     });
-  } catch (err) {
-    res.status(500).json({
-      success: false
-    });
-  }
 });
 
 module.exports = router;

@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const asyncHandler = require('../utils/asynchandler');
 
 const movies = require('../data/movies');
 const movieDetails = require('../data/movieDetails');
 
-const requireJSON = async (req, res, next) => {
+const requireJSON = asyncHandler(async (req, res, next)) => {
   if (!req.is('application/json')) {
     res.status(400).send('Content type must be JSON!');
   } else {
@@ -15,21 +16,14 @@ const requireJSON = async (req, res, next) => {
 // @desc    Get movie
 // @route   GET /api/movie
 // @access  Public
-router.get('/', async (req, res, next) => {
-  try {
+router.get('/',  asyncHandler(async (req, res, next)) => {
     res.status(200).json({
       success: true,
       msg: 'movie route'
     });
-  } catch (err) {
-    res.status(500).json({
-      success: false
-    });
-  }
 });
 
-router.get('/now_playing', async (req, res, next) => {
-  try {
+router.get('/now_playing', asyncHandler(async (req, res, next)) => {
     let page = req.query.page;
     if (!page) page = 1;
     const page_size = 40;
@@ -39,15 +33,9 @@ router.get('/now_playing', async (req, res, next) => {
       success: true,
       results: popular.slice((page - 1) * page_size, page * page_size)
     });
-  } catch (err) {
-    res.status(500).json({
-      success: false
-    });
-  }
 });
 
-router.get('/:id', async (req, res, next) => {
-  try {
+router.get('/:id', asyncHandler(async (req, res, next)) => {
     const id = req.params.id;
     console.log(id);
     const movie = movieDetails.find(item => String(item.id) === id);
@@ -57,15 +45,9 @@ router.get('/:id', async (req, res, next) => {
       });
     }
     res.status(200).json(movie);
-  } catch (err) {
-    res.status(500).json({
-      success: false
-    });
-  }
 });
 
-router.post('/:id/rating', requireJSON, async (req, res, next) => {
-  try {
+router.post('/:id/rating', requireJSON, asyncHandler(async (req, res, next)) => {
     const id = req.params.id;
     const value = req.body.value;
     if (value < 0.5 || value > 10) {
@@ -79,25 +61,14 @@ router.post('/:id/rating', requireJSON, async (req, res, next) => {
         msg: `Than you for rating movie id: ${id}. Your rate is ${value}`
       });
     }
-  } catch (err) {
-    res.status(500).json({
-      success: false
-    });
-  }
 });
 
-router.delete('/:id/rating', async (req, res, next) => {
-  try {
+router.delete('/:id/rating', asyncHandler(async (req, res, next)) => {
     const id = req.params.id;
     res.status(200).json({
       success: true,
       msg: `Your rating of movie id: ${id} is deleted.`
     });
-  } catch (err) {
-    res.status(500).json({
-      success: false
-    });
-  }
 });
 
 module.exports = router;

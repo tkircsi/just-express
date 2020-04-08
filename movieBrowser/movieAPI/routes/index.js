@@ -1,20 +1,15 @@
 const express = require('express');
 const router = express.Router();
+const asyncHandler = require('../utils/asynchandler');
 
 // @desc    Get popular movies
 // @route   GET /api
 // @access  Public
-router.get('/', async (req, res, next) => {
-  try {
+router.get('/',  asyncHandler(async (req, res, next)) => {
     res.status(200).json({
       success: true,
       msg: 'Welcome @ movieAPI!'
     });
-  } catch (err) {
-    res.status(500).json({
-      success: false
-    });
-  }
 });
 
 module.exports = router;
