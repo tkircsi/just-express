@@ -4,7 +4,6 @@ import axios from 'axios';
 const FileForm = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const file = document.getElementById('file-field').files[0];
     const config = {
       headers: {
         'content-type': 'multipart/form-data',
