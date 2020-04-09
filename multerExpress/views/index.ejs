@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <form method="post" action="/formsub" enctype="multipart/form-data">
+      <input type="text" placeholder=""filename" name="desc" />
+      <input type="file" name="meme" />
+      <button type="submit">submit</button>
+    </form>
+  </body>
+</html>
